@@ -105,7 +105,7 @@ $ docker run --rm \
              -e MAIL_STARTTLS=true \
              # the port to publish cmd_as_service at
              -p 9292:9292 \
-             ncuesta/tubo-cmd
+             ncuesta/tubo:cmd
 ```
 
 Once you have that image running, you can `curl` requests into it to get your dumps:
