@@ -1,0 +1,53 @@
+version: '2'
+services:
+  transfer:
+    image: dutchcoders/transfer.sh:latest
+    ports:
+      - "80"
+    entrypoint:
+      - /go/bin/transfersh
+      - --listener
+      - ":80"
+      - --provider
+      - local
+      - --basedir
+      - /tmp/
+  tubo:
+    build:
+      context: .
+      dockerfile: ./docker/Dockerfile
+    environment:
+      TRANSFER_URL: "http://transfer"
+      TUBO_HOST: db
+      TUBO_PASS: tub0
+    depends_on:
+      - db
+      - transfer
+    command:
+      - testubo
+  tubo-cmd:
+    build:
+      context: .
+      dockerfile: ./docker/Dockerfile.cmd
+    ports:
+      - "9292"
+    environment:
+      TRANSFER_URL: "http://transfer"
+      TUBO_HOST: db
+      TUBO_PASS: tub0
+      MAIL_TO: ${MAIL_TO}
+      MAIL_FROM: ${MAIL_FROM}
+      MAIL_HOST: ${MAIL_HOST}
+      MAIL_PORT: ${MAIL_PORT}
+      MAIL_USER: ${MAIL_USER}
+      MAIL_PASS: ${MAIL_PASS}
+      MAIL_AUTH: ${MAIL_AUTH}
+      MAIL_STARTTLS: ${MAIL_STARTTLS}
+    depends_on:
+      - db
+      - transfer
+  db:
+    image: mysql:5.7
+    environment:
+      MYSQL_ROOT_PASSWORD: tub0
+      MYSQL_DATABASE: testubo
