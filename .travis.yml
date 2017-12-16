@@ -1,0 +1,15 @@
+sudo: required
+
+services:
+  - docker
+
+before_install:
+  - docker login -u "${DOCKER_USERNAME}" -p "${DOCKER_PASSWORD}"
+
+script:
+  - docker build -t ncuesta/tubo:latest -f docker/Dockerfile .
+  - docker build -t ncuesta/tubo:cmd -f docker/Dockerfile .
+
+after_success:
+  - docker push ncuesta/tubo:latest
+  - docker push ncuesta/tubo:cmd
