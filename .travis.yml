@@ -8,7 +8,7 @@ before_install:
 
 script:
   - docker build -t ncuesta/tubo:latest -f docker/Dockerfile .
-  - docker build -t ncuesta/tubo:cmd -f docker/Dockerfile .
+  - docker build -t ncuesta/tubo:cmd -f docker/Dockerfile.cmd .
 
 after_success:
   - docker push ncuesta/tubo:latest
